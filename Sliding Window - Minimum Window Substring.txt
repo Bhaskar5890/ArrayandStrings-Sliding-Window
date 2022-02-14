@@ -1,0 +1,63 @@
+public class Solution {
+    public string MinWindow(string s, string t) 
+    {
+        var leftIndex = 0;
+        var rightIndex = 0;
+        var count = 0;
+        var minLength = Int32.MaxValue;
+        var startIndexOfStr = 0;
+        
+        var dict = new Dictionary<char, int>();
+        
+        foreach(var c in t)
+        {
+            if(!dict.ContainsKey(c))
+            {
+                dict.Add(c, 1);
+                count++;
+            }
+            else
+            {
+                dict[c]++;
+            }
+        }
+        
+        while(rightIndex < s.Length)
+        {
+            if(dict.ContainsKey(s[rightIndex]))
+            {
+                dict[s[rightIndex]]--;
+                if(dict[s[rightIndex]] == 0)
+                {
+                    count--;   
+                }
+            }
+            
+            if(count == 0)
+            {
+                while(count == 0)
+                {
+                    //Update min length and resultant string index
+                    if (rightIndex - leftIndex + 1 < minLength)
+                    {
+                      minLength = rightIndex - leftIndex + 1;
+                      startIndexOfStr = leftIndex;
+                    }
+                    
+                    if(dict.ContainsKey(s[leftIndex]))
+                    {
+                        dict[s[leftIndex]]++;
+                        if(dict[s[leftIndex]] == 1)
+                        {
+                            count++;
+                        }
+                    }
+                    leftIndex++;
+                }
+            }
+            rightIndex++;
+        }
+        
+        return minLength == Int32.MaxValue ? "" : s.Substring(startIndexOfStr, minLength);
+    }
+}

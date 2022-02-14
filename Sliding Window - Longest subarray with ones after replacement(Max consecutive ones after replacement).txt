@@ -1,0 +1,36 @@
+public class Solution {
+    public int LongestOnes(int[] nums, int k) 
+    {
+        var leftIndex = 0;
+        var rightIndex = 0;
+        var zeroCount = 0;
+        var maxLength = 0;
+        
+        while(rightIndex < nums.Length)
+        {
+            if(nums[rightIndex] == 0)
+            {
+                zeroCount++;
+            }
+            
+            if(zeroCount <= k)
+            {
+                maxLength = Math.Max(maxLength, rightIndex - leftIndex + 1);
+            }
+            else
+            {
+                while(zeroCount > k)
+                {
+                    if(nums[leftIndex] == 0)
+                    {
+                        zeroCount--;
+                    }
+                    leftIndex++;
+                }
+            }
+            rightIndex++;
+        }
+        
+        return maxLength;
+    }
+}

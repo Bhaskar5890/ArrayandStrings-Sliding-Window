@@ -1,0 +1,56 @@
+public class Solution {
+    public bool CheckInclusion(string s1, string s2) 
+    {
+        var leftIndex = 0;
+        var rightIndex = 0;
+        int count = 0;
+        var dict = new Dictionary<char, int>();
+        
+        foreach(var c in s1)
+        {
+            if(!dict.ContainsKey(c))
+            {
+                dict.Add(c, 1);
+                count++;
+            }
+            else
+            {
+                dict[c]++;
+            }
+        }
+        
+        while(rightIndex < s2.Length)
+        {
+            if(dict.ContainsKey(s2[rightIndex]))
+            {
+                dict[s2[rightIndex]]--;
+                if(dict[s2[rightIndex]] == 0)
+                {
+                    count--;
+                }
+            }
+            
+            if(rightIndex - leftIndex + 1 == s1.Length)
+            {
+                if(count == 0)
+                {
+                    return true;
+                }
+                
+                if(dict.ContainsKey(s2[leftIndex]))
+                {
+                    dict[s2[leftIndex]]++;
+                    if(dict[s2[leftIndex]] == 1)
+                    {
+                        count++;
+                    }   
+                }
+                leftIndex++;
+            }
+            
+            rightIndex++;
+        }
+        
+        return false;
+    }
+}

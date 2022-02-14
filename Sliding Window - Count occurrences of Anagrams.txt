@@ -1,0 +1,61 @@
+public class Solution {
+    public IList<int> FindAnagrams(string s, string p) 
+    {
+      var res = new List<int>();
+      int count = 0;
+      var k = p.Length;
+      var dict = new Dictionary<char, int>();
+
+      var leftWindow = 0;
+      var rightWindow = 0;
+
+      //Create a dictionary with chars
+      foreach (var c in p)
+      {
+        if (!dict.ContainsKey(c))
+        {
+          dict.Add(c, 1);
+          count++;
+        }
+        else
+        {
+          dict[c]++;
+        }
+      }
+
+      while (rightWindow < s.Length)
+      {
+        if (dict.ContainsKey(s[rightWindow]))
+        {
+          dict[s[rightWindow]]--;
+          if (dict[s[rightWindow]] == 0)
+          {
+            count--;
+          }
+        }
+        if (rightWindow - leftWindow + 1 < k)
+        {
+          rightWindow++;
+        }
+        else
+        {
+          if (count == 0)
+          {
+            res.Add(leftWindow);
+          }
+          if (dict.ContainsKey(s[leftWindow]))
+          {
+            dict[s[leftWindow]]++;
+            if (dict[s[leftWindow]] == 1)
+            {
+              count++;
+            }
+          }
+          leftWindow++;
+          rightWindow++;
+        }
+      }
+
+      return res;
+    }
+}

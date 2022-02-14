@@ -1,0 +1,32 @@
+public class Solution {
+    public int[] MaxSlidingWindow(int[] nums, int k) 
+    {
+        if(k == 1)
+        {
+           return nums; 
+        }
+        int leftWindow = 0;
+        var linkList = new LinkedList<int>();
+        var res = new List<int>();
+        for(int rightWindow = 0; rightWindow < nums.Length; rightWindow++)
+        {
+            while (linkList.Count() > 0 && nums[rightWindow] > nums[linkList.Last.Value])
+            {
+              linkList.RemoveLast();
+            }
+            linkList.AddLast(rightWindow);
+
+            if (rightWindow - leftWindow + 1 >= k)
+            {
+              res.Add(nums[linkList.First.Value]);
+              if (linkList.Count() > 0 && linkList.First.Value == leftWindow)
+              {
+                linkList.RemoveFirst();
+              }
+              leftWindow++;
+            }
+        }
+        
+        return res.ToArray();
+    }
+}

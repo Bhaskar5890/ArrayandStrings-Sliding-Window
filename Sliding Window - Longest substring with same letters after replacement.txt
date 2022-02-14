@@ -1,0 +1,43 @@
+public class Solution {
+    public int CharacterReplacement(string s, int k) 
+    {
+        var leftIndex = 0;
+        var rightIndex = 0;
+        var dict = new Dictionary<char, int>();
+        var maxFreq = 0;
+        var maxLength = Int32.MinValue;
+        
+        while(rightIndex < s.Length)
+        {
+            if(!dict.ContainsKey(s[rightIndex]))
+            {
+                dict.Add(s[rightIndex], 1);
+            }
+            else
+            {
+                dict[s[rightIndex]]++;
+            }
+            
+            maxFreq = Math.Max(maxFreq, dict[s[rightIndex]]);
+            
+            if((rightIndex - leftIndex + 1) - maxFreq > k)
+            {
+                while((rightIndex - leftIndex + 1) - maxFreq > k)
+                {
+                    if(dict.ContainsKey(s[leftIndex]))
+                    {
+                        dict[s[leftIndex]]--;
+                        leftIndex++;
+                    }
+                }
+            }
+            else
+            {
+                maxLength = Math.Max(maxLength, rightIndex - leftIndex + 1);
+            }
+            rightIndex++;
+        }
+        
+        return maxLength == Int32.MinValue ? 0 : maxLength;
+    }
+}

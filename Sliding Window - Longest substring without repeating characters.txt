@@ -1,0 +1,43 @@
+public class Solution {
+    public int LengthOfLongestSubstring(string s) 
+    {
+        var leftIndex = 0;
+        var rightIndex = 0;
+        var maxLength = Int32.MinValue;
+        
+        var dict = new Dictionary<char, int>();
+        
+        while(rightIndex < s.Length)
+        {
+            if(!dict.ContainsKey(s[rightIndex]))
+            {
+                dict.Add(s[rightIndex], 1);
+            }
+            else
+            {
+                dict[s[rightIndex]]++;
+            }
+            
+            if(dict.Count == rightIndex - leftIndex + 1)
+            {
+                maxLength = Math.Max(maxLength, rightIndex - leftIndex + 1);
+                rightIndex++;    
+            }
+            else if(dict.Count < rightIndex - leftIndex + 1)
+            {
+                while(dict.Count < rightIndex - leftIndex + 1)
+                {
+                    dict[s[leftIndex]]--;
+                    if(dict[s[leftIndex]] == 0)
+                    {
+                        dict.Remove(s[leftIndex]);
+                    }
+                    leftIndex++;
+                }
+                rightIndex++;
+            }
+        }
+        
+        return maxLength == Int32.MinValue ? 0 : maxLength;
+    }
+}
